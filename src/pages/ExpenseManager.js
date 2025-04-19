@@ -190,6 +190,74 @@ const BalanceAmount = styled.span`
   color: ${props => props.positive ? 'green' : 'red'};
 `;
 
+const MembersSection = styled.div`
+  margin-top: 2rem;
+`;
+
+const MembersList = styled.div`
+  margin-top: 1rem;
+`;
+
+const MemberItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const MemberName = styled.span`
+  font-weight: 500;
+`;
+
+const RemoveMemberButton = styled(motion.button)`
+  background: #ff5a5a;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: #ff3030;
+  }
+`;
+
+const AddMemberForm = styled.form`
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const AddMemberInput = styled.input`
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+`;
+
+const AddMemberButton = styled(motion.button)`
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+`;
+
 // Mock data for initial development
 const initialExpenses = [
   { id: 1, title: 'Dinner at Restaurant', amount: 120, paidBy: 'Alice', date: '2023-10-15', participants: ['Alice', 'Bob', 'Charlie'] },
@@ -210,6 +278,7 @@ const ExpenseManager = () => {
     participants: []
   });
   const [balances, setBalances] = useState({});
+  const [newMemberName, setNewMemberName] = useState('');
   
   // Calculate balances between members
   useEffect(() => {
@@ -290,6 +359,37 @@ const ExpenseManager = () => {
     }
   };
   
+  const handleAddMember = (e) => {
+    e.preventDefault();
+    if (!newMemberName.trim()) return;
+    
+    // Check if member already exists
+    if (members.includes(newMemberName.trim())) {
+      alert('This person is already in the list');
+      return;
+    }
+    
+    setMembers([...members, newMemberName.trim()]);
+    setNewMemberName('');
+  };
+  
+  const handleRemoveMember = (memberToRemove) => {
+    // Don't allow removing 'You'
+    if (memberToRemove === 'You') return;
+    
+    // Check if member has any expenses
+    const hasExpenses = expenses.some(expense => 
+      expense.paidBy === memberToRemove || expense.participants.includes(memberToRemove)
+    );
+    
+    if (hasExpenses) {
+      alert('Cannot remove this person because they have expenses. Delete their expenses first.');
+      return;
+    }
+    
+    setMembers(members.filter(member => member !== memberToRemove));
+  };
+  
   return (
     <ExpenseManagerContainer>
       <Container>
@@ -307,6 +407,42 @@ const ExpenseManager = () => {
             >
               Add New Expense
             </Button>
+            
+            <MembersSection>
+              <SectionTitle>Members</SectionTitle>
+              <AddMemberForm onSubmit={handleAddMember}>
+                <AddMemberInput
+                  type="text"
+                  value={newMemberName}
+                  onChange={(e) => setNewMemberName(e.target.value)}
+                  placeholder="Add new member"
+                />
+                <AddMemberButton
+                  type="submit"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Add
+                </AddMemberButton>
+              </AddMemberForm>
+              
+              <MembersList>
+                {members.map(member => (
+                  <MemberItem key={member}>
+                    <MemberName>{member}</MemberName>
+                    {member !== 'You' && (
+                      <RemoveMemberButton
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handleRemoveMember(member)}
+                      >
+                        ✕
+                      </RemoveMemberButton>
+                    )}
+                  </MemberItem>
+                ))}
+              </MembersList>
+            </MembersSection>
             
             <BalanceSummary>
               <SectionTitle>Your Balances</SectionTitle>
