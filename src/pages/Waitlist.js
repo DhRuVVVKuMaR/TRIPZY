@@ -17,9 +17,10 @@ const FormContainer = styled(motion.div)`
   max-width: 500px;
   width: 100%;
   padding: 2rem;
-  background: white;
+  background: ${props => props.theme.colors.gray.light};
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid ${props => props.theme.colors.gray.medium};
 `;
 
 const Title = styled.h1`
@@ -56,10 +57,12 @@ const Label = styled.label`
 
 const Input = styled.input`
   padding: 0.8rem;
-  border: 2px solid #eee;
+  border: 2px solid ${props => props.theme.colors.gray.medium};
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
 
   &:focus {
     outline: none;

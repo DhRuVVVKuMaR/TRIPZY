@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-import theme from './styles/theme';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -11,9 +11,11 @@ import Waitlist from './pages/Waitlist';
 import Test from './pages/Test';
 import ExpenseManager from './pages/ExpenseManager';
 
-const App = () => {
+const AppContent = () => {
+  const { theme } = useTheme();
+  
   return (
-    <ThemeProvider theme={theme}>
+    <StyledThemeProvider theme={theme}>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -24,6 +26,14 @@ const App = () => {
         <Route path="/waitlist" element={<Waitlist />} />
         <Route path="/test" element={<Test />} />
       </Routes>
+    </StyledThemeProvider>
+  );
+};
+
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
     </ThemeProvider>
   );
 };

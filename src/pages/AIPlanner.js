@@ -16,12 +16,13 @@ const ChatContainer = styled.div`
   width: 100%;
   max-width: 800px;
   height: 600px;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.background};
   border-radius: 20px;
   box-shadow: ${({ theme }) => theme.shadows.large};
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.colors.gray.medium};
 `;
 
 const ChatHeader = styled.div`
@@ -57,29 +58,53 @@ const ChatMessages = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  background: ${({ theme }) => theme.colors.gray.light};
+  gap: 0.5rem;
+  background: ${({ theme }) => theme.colors.background};
+  
+  /* Custom scrollbar for better visibility in dark mode */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.background};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.gray.medium};
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.gray.dark};
+  }
 `;
 
 const Message = styled(motion.div)`
   max-width: 80%;
-  padding: 1rem;
-  border-radius: 15px;
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
   line-height: 1.5;
   position: relative;
   font-size: ${({ theme }) => theme.fontSizes.medium};
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  word-wrap: break-word;
   
   ${({ isUser }) => isUser ? `
     align-self: flex-end;
     background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
+    color: white;
     border-bottom-right-radius: 5px;
+    margin-left: 1rem;
   ` : `
     align-self: flex-start;
-    background: ${({ theme }) => theme.colors.white};
-    color: ${({ theme }) => theme.colors.secondary};
+    background: white;
+    color: ${({ theme }) => theme.colors.text};
     border-bottom-left-radius: 5px;
+    margin-right: 1rem;
     box-shadow: ${({ theme }) => theme.shadows.small};
+    border: 1px solid ${({ theme }) => theme.colors.gray.light};
   `}
 `;
 
@@ -88,7 +113,7 @@ const InputContainer = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.gray.medium};
   display: flex;
   gap: 0.5rem;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.background};
 `;
 
 const Input = styled.input`
@@ -98,10 +123,16 @@ const Input = styled.input`
   border-radius: 25px;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   transition: ${({ theme }) => theme.transitions.default};
+  background: white;
+  color: ${({ theme }) => theme.colors.text};
   
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textLight};
   }
 `;
 
@@ -129,11 +160,14 @@ const TypingIndicator = styled(motion.div)`
   display: flex;
   gap: 0.3rem;
   padding: 0.5rem 1rem;
-  background: ${({ theme }) => theme.colors.white};
-  border-radius: 15px;
+  background: white;
+  border-radius: 18px;
   align-self: flex-start;
   width: fit-content;
   box-shadow: ${({ theme }) => theme.shadows.small};
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.gray.light};
 `;
 
 const Dot = styled(motion.div)`
@@ -147,10 +181,11 @@ const PreferencesContainer = styled.div`
   width: 100%;
   max-width: 800px;
   margin-top: 20px;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.background};
   border-radius: 20px;
   box-shadow: ${({ theme }) => theme.shadows.large};
   padding: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.gray.medium};
 `;
 
 const PreferenceSection = styled.div`
@@ -159,7 +194,7 @@ const PreferenceSection = styled.div`
 
 const PreferenceTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.medium};
-  color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 10px;
 `;
 
@@ -173,14 +208,14 @@ const PreferenceButton = styled(motion.button)`
   padding: 8px 16px;
   border: 2px solid ${({ theme }) => theme.colors.primary};
   border-radius: 20px;
-  background: ${({ selected }) => selected ? '${({ theme }) => theme.colors.primary}' : 'transparent'};
-  color: ${({ selected }) => selected ? 'white' : '${({ theme }) => theme.colors.primary}'};
+  background: ${({ selected, theme }) => selected ? theme.colors.primary : 'transparent'};
+  color: ${({ selected, theme }) => selected ? theme.colors.white : theme.colors.primary};
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
     background: ${({ theme }) => theme.colors.primary};
-    color: white;
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -190,6 +225,17 @@ const BudgetInput = styled.input`
   border: 2px solid ${({ theme }) => theme.colors.gray.medium};
   border-radius: 10px;
   margin-top: 10px;
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textLight};
+  }
 `;
 
 const ToggleButton = styled(motion.button)`

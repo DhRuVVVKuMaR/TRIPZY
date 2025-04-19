@@ -32,11 +32,12 @@ const FeaturesGrid = styled.div`
 `;
 
 const FeatureCard = styled(motion.div)`
-  background: white;
+  background: ${({ theme }) => theme.colors.gray.light};
   padding: 2rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  border: 1px solid ${({ theme }) => theme.colors.gray.medium};
 
   &:hover {
     transform: translateY(-10px);

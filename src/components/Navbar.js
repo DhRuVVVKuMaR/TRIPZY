@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const Nav = styled.nav`
   position: fixed;
@@ -9,13 +10,20 @@ const Nav = styled.nav`
   left: 0;
   right: 0;
   height: 80px;
-  background: rgba(20, 20, 20, 0.9);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.9));
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 ${({ theme }) => theme.spacing.large};
-  box-shadow: ${({ theme }) => theme.shadows.small};
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 70px;
+    padding: 0 ${({ theme }) => theme.spacing.medium};
+  }
 `;
 
 const Logo = styled(Link)`
@@ -55,84 +63,132 @@ const NavLinks = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.text};
+  color: white;
   text-decoration: none;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   font-family: ${({ theme }) => theme.fonts.body};
-  transition: ${({ theme }) => theme.transitions.default};
+  transition: all 0.3s ease;
   position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: ${({ theme }) => theme.colors.primary};
-    transition: ${({ theme }) => theme.transitions.default};
-  }
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 500;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-    &:after {
-      width: 100%;
-    }
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 12px 20px;
+    width: 100%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 4px 0;
   }
 `;
 
 const CTAButton = styled(motion.button)`
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => `${theme.colors.primary}dd`});
+  color: white;
   border: none;
-  padding: ${({ theme }) => `${theme.spacing.small} ${theme.spacing.large}`};
+  padding: 10px 24px;
   border-radius: 25px;
   font-size: ${({ theme }) => theme.fontSizes.medium};
-  font-family: ${({ theme }) => theme.fonts.body};
+  font-weight: 600;
   cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.default};
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
   }
 `;
 
 const MobileMenuButton = styled.button`
   display: none;
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ theme }) => theme.fontSizes.xlarge};
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 24px;
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.small};
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
 const MobileMenu = styled(motion.div)`
   display: none;
   position: fixed;
-  top: 80px;
+  top: 70px;
   left: 0;
   right: 0;
-  background: ${({ theme }) => theme.colors.background};
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.9));
   padding: ${({ theme }) => theme.spacing.medium};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 999;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.spacing.medium};
+    gap: ${({ theme }) => theme.spacing.small};
+    padding: 16px;
+  }
+`;
+
+const ThemeToggleButton = styled(motion.button)`
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  margin-left: ${({ theme }) => theme.spacing.medium};
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin-left: 0;
   }
 `;
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -159,6 +215,13 @@ const Navbar = () => {
               Join Waitlist
             </CTAButton>
           </Link>
+          <ThemeToggleButton
+            onClick={toggleTheme}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </ThemeToggleButton>
         </NavLinks>
         <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? '✕' : '☰'}
@@ -185,6 +248,13 @@ const Navbar = () => {
                 Join Waitlist
               </CTAButton>
             </Link>
+            <ThemeToggleButton
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              {isDarkMode ? '☀️' : '🌙'}
+            </ThemeToggleButton>
           </MobileMenu>
         )}
       </AnimatePresence>
