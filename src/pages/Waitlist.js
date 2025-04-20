@@ -118,6 +118,10 @@ const Waitlist = () => {
     setStatus({ type: '', message: '' });
 
     try {
+      if (!db) {
+        throw new Error('Firestore is not initialized');
+      }
+
       console.log('Attempting to add to waitlist:', formData);
       const docRef = await addDoc(collection(db, 'waitlist'), {
         ...formData,

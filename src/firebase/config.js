@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   // Replace with your Firebase config
@@ -11,15 +12,21 @@ const firebaseConfig = {
   appId: "1:207380509514:web:63674b3c5946d20aa9c7b3",
 };
 
-let app;
-let db;
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-try {
-  app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-  console.log('Firebase initialized successfully');
-} catch (error) {
-  console.error('Error initializing Firebase:', error);
-}
+// Initialize Firestore
+const db = getFirestore(app);
 
-export { db }; 
+// Initialize Auth
+const auth = getAuth(app);
+
+// Initialize Google Provider
+const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('profile');
+googleProvider.addScope('email');
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+export { db, auth, googleProvider }; 

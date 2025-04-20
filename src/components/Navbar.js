@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { auth } from '../firebase/firebase';
+import { auth } from '../firebase/config';
 import { signOut } from 'firebase/auth';
 import {
   AppBar,

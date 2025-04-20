@@ -7,7 +7,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
+import { auth } from '../firebase/config';
 
 const ProfileContainer = styled(Container)`
   min-height: 100vh;
