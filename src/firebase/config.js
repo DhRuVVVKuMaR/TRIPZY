@@ -6,10 +6,20 @@ const firebaseConfig = {
   apiKey: "AIzaSyDYkCSJUp9f2RUiEzfBcnQsx_cwkl9yafg",
   authDomain: "tripzybitbox.firebaseapp.com",
   projectId: "tripzybitbox",
-  storageBucket: "tripzybitbox.firebasestorage.app",
+  storageBucket: "tripzybitbox.appspot.com",
   messagingSenderId: "207380509514",
   appId: "1:207380509514:web:63674b3c5946d20aa9c7b3",
 };
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app); 
+let app;
+let db;
+
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  console.log('Firebase initialized successfully');
+} catch (error) {
+  console.error('Error initializing Firebase:', error);
+}
+
+export { db }; 

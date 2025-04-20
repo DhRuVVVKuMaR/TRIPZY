@@ -118,10 +118,12 @@ const Waitlist = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      await addDoc(collection(db, 'waitlist'), {
+      console.log('Attempting to add to waitlist:', formData);
+      const docRef = await addDoc(collection(db, 'waitlist'), {
         ...formData,
         timestamp: new Date(),
       });
+      console.log('Document written with ID:', docRef.id);
 
       setStatus({
         type: 'success',
@@ -129,9 +131,10 @@ const Waitlist = () => {
       });
       setFormData({ name: '', email: '', phone: '' });
     } catch (error) {
+      console.error('Error adding to waitlist:', error);
       setStatus({
         type: 'error',
-        message: 'Something went wrong. Please try again later.',
+        message: error.message || 'Something went wrong. Please try again later.',
       });
     } finally {
       setIsSubmitting(false);
