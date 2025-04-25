@@ -26,14 +26,14 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const StyledAppBar = styled(AppBar)`
   && {
-    background: ${props => props.theme.isDark 
+    background: ${props => props.isDarkMode 
       ? '#000000'
       : '#ffffff'};
-    color: ${props => props.theme.isDark ? '#ffffff' : '#000000'};
-    border-bottom: 1px solid ${props => props.theme.isDark 
-      ? 'rgba(255, 255, 255, 0.2)'
+    color: ${props => props.isDarkMode ? '#ffffff' : '#000000'};
+    border-bottom: 1px solid ${props => props.isDarkMode 
+      ? 'rgba(255, 255, 255, 0.1)'
       : 'rgba(0, 0, 0, 0.1)'};
-    box-shadow: ${props => props.theme.isDark 
+    box-shadow: ${props => props.isDarkMode 
       ? '0 4px 30px rgba(0, 0, 0, 0.5)'
       : '0 4px 30px rgba(0, 0, 0, 0.1)'};
     transition: all 0.3s ease;
@@ -44,90 +44,65 @@ const Logo = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: ${props => props.theme.isDark ? '#ffffff' : '#000000'};
+  color: ${props => props.isDarkMode ? '#ffffff' : '#000000'};
   font-weight: 700;
   font-size: 1.5rem;
   transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: ${props => props.isDarkMode 
+    ? '#111111'
+    : '#f8f9fa'};
 
   &:hover {
     transform: translateY(-2px);
+    background: ${props => props.isDarkMode 
+      ? '#1a1a1a'
+      : '#f1f3f5'};
   }
 
   svg {
     margin-right: 8px;
     color: #0dd354;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: rotate(-10deg);
   }
 `;
 
 const NavLink = styled(Link)`
   position: relative;
-  color: ${props => props.theme.isDark ? '#ffffff' : '#000000'};
+  color: ${props => props.isDarkMode ? '#ffffff' : '#000000'};
   text-decoration: none;
   font-weight: 600;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   transition: all 0.3s ease;
   z-index: 1;
-
-  &:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: #0dd354;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-    z-index: -1;
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 8px;
-    background: ${props => props.theme.isDark 
-      ? 'rgba(255, 255, 255, 0.1)'
-      : 'rgba(0, 0, 0, 0.05)'};
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: -1;
-  }
+  background: ${props => props.active 
+    ? props.isDarkMode 
+      ? '#1a1a1a'
+      : '#f8f9fa'
+    : 'transparent'};
 
   &:hover {
     color: #0dd354;
-    
-    &:after {
-      opacity: 1;
-    }
-    
-    &:before {
-      width: calc(100% - 32px);
-    }
+    background: ${props => props.isDarkMode 
+      ? '#1a1a1a'
+      : '#f8f9fa'};
+    transform: translateY(-2px);
   }
 
   &.active {
     color: #0dd354;
     font-weight: 600;
-    background: ${props => props.theme.isDark 
-      ? 'rgba(13, 211, 84, 0.2)'
-      : 'rgba(13, 211, 84, 0.1)'};
+    background: ${props => props.isDarkMode 
+      ? '#1a1a1a'
+      : '#f8f9fa'};
     
-    &:after {
-      opacity: 1;
-      background: ${props => props.theme.isDark 
-        ? 'rgba(13, 211, 84, 0.25)'
-        : 'rgba(13, 211, 84, 0.15)'};
-    }
-    
-    &:before {
-      width: calc(100% - 32px);
-    }
-
     &:hover {
       color: #0dd354;
     }
@@ -141,16 +116,23 @@ const ThemeToggle = styled(IconButton)`
     height: 40px;
     border-radius: 12px;
     transition: all 0.3s ease;
-    color: ${props => props.theme.isDark ? '#ffffff' : '#000000'};
-    background: ${props => props.theme.isDark 
-      ? 'rgba(255, 255, 255, 0.15)'
-      : 'rgba(0, 0, 0, 0.05)'};
+    color: ${props => props.isDarkMode ? '#ffffff' : '#000000'};
+    background: ${props => props.isDarkMode 
+      ? '#111111'
+      : '#f8f9fa'};
+    border: 1px solid ${props => props.isDarkMode 
+      ? '#1a1a1a'
+      : '#e9ecef'};
 
     &:hover {
-      background: ${props => props.theme.isDark 
-        ? 'rgba(255, 255, 255, 0.25)'
-        : 'rgba(0, 0, 0, 0.1)'};
-      transform: translateY(-2px);
+      background: ${props => props.isDarkMode 
+        ? '#1a1a1a'
+        : '#f1f3f5'};
+      transform: translateY(-2px) rotate(180deg);
+    }
+
+    svg {
+      transition: all 0.3s ease;
     }
   }
 `;
@@ -158,8 +140,11 @@ const ThemeToggle = styled(IconButton)`
 const UserAvatar = styled(Avatar)`
   && {
     cursor: pointer;
+    width: 40px;
+    height: 40px;
     border: 2px solid #0dd354;
     transition: all 0.3s ease;
+    background: ${props => props.isDarkMode ? '#1a1a1a' : '#ffffff'};
 
     &:hover {
       transform: scale(1.1);
@@ -171,28 +156,32 @@ const UserAvatar = styled(Avatar)`
 const MobileMenu = styled(Menu)`
   && {
     .MuiPaper-root {
-      background: ${props => props.theme.isDark 
+      background: ${props => props.isDarkMode 
         ? '#000000'
         : '#ffffff'};
-      border: 1px solid ${props => props.theme.isDark 
-        ? 'rgba(255, 255, 255, 0.2)'
-        : 'rgba(0, 0, 0, 0.1)'};
-      border-radius: 12px;
+      border: 1px solid ${props => props.isDarkMode 
+        ? '#1a1a1a'
+        : '#e9ecef'};
+      border-radius: 16px;
       margin-top: 8px;
+      padding: 8px;
+      min-width: 200px;
     }
 
     .MuiMenuItem-root {
       padding: 12px 24px;
-      transition: all 0.3s ease;
-      border-radius: 8px;
       margin: 4px;
-      color: ${props => props.theme.isDark ? '#ffffff' : '#000000'};
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      color: ${props => props.isDarkMode ? '#ffffff' : '#000000'};
+      font-weight: 500;
 
       &:hover {
-        background: ${props => props.theme.isDark 
-          ? 'rgba(255, 255, 255, 0.15)'
-          : 'rgba(0, 0, 0, 0.05)'};
+        background: ${props => props.isDarkMode 
+          ? '#1a1a1a'
+          : '#f8f9fa'};
         color: #0dd354;
+        transform: translateX(4px);
       }
     }
   }
@@ -213,6 +202,32 @@ const ActionButton = styled(Button)`
       background: linear-gradient(135deg, #0dd354dd, #0dd354);
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(13, 211, 84, 0.3);
+    }
+  }
+`;
+
+const MenuIconButton = styled(IconButton)`
+  && {
+    color: ${props => props.isDarkMode ? '#ffffff' : '#000000'};
+    border-radius: 12px;
+    padding: 8px;
+    transition: all 0.3s ease;
+    background: ${props => props.isDarkMode 
+      ? '#111111'
+      : '#f8f9fa'};
+    border: 1px solid ${props => props.isDarkMode 
+      ? '#1a1a1a'
+      : '#e9ecef'};
+
+    &:hover {
+      background: ${props => props.isDarkMode 
+        ? '#1a1a1a'
+        : '#f1f3f5'};
+      transform: translateY(-2px);
+    }
+
+    svg {
+      font-size: 1.5rem;
     }
   }
 `;
@@ -279,12 +294,12 @@ const Navbar = () => {
   };
 
   return (
-    <StyledAppBar position="fixed">
+    <StyledAppBar position="fixed" isDarkMode={isDarkMode}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Desktop Logo */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 4 }}>
-            <Logo to="/">
+            <Logo to="/" isDarkMode={isDarkMode}>
               <FlightTakeoffIcon />
               Tripzy
             </Logo>
@@ -292,16 +307,16 @@ const Navbar = () => {
 
           {/* Mobile Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
+            <MenuIconButton
               size="large"
               aria-label="menu"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              isDarkMode={isDarkMode}
             >
               <MenuIcon />
-            </IconButton>
+            </MenuIconButton>
             <MobileMenu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -316,6 +331,7 @@ const Navbar = () => {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
+              isDarkMode={isDarkMode}
             >
               {pages.map((page) => (
                 <MenuItem 
@@ -332,7 +348,7 @@ const Navbar = () => {
 
           {/* Mobile Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-            <Logo to="/">
+            <Logo to="/" isDarkMode={isDarkMode}>
               <FlightTakeoffIcon />
               Tripzy
             </Logo>
@@ -346,6 +362,7 @@ const Navbar = () => {
                 to={page.path}
                 className={location.pathname === page.path ? 'active' : ''}
                 onClick={handleCloseNavMenu}
+                isDarkMode={isDarkMode}
               >
                 {page.title}
               </NavLink>
@@ -364,7 +381,7 @@ const Navbar = () => {
               </ActionButton>
             )}
 
-            <ThemeToggle onClick={toggleTheme} size="large">
+            <ThemeToggle onClick={toggleTheme} size="large" isDarkMode={isDarkMode}>
               {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
             </ThemeToggle>
 
@@ -375,6 +392,7 @@ const Navbar = () => {
                     onClick={handleOpenUserMenu}
                     src={getUserAvatar()}
                     alt={getUserDisplayName()}
+                    isDarkMode={isDarkMode}
                   />
                 </Tooltip>
                 <MobileMenu
@@ -391,12 +409,13 @@ const Navbar = () => {
                   }}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
+                  isDarkMode={isDarkMode}
                 >
                   <MenuItem component={Link} to="/profile" onClick={handleCloseUserMenu}>
                     Profile
                   </MenuItem>
-                  <MenuItem component={Link} to="/settings" onClick={handleCloseUserMenu}>
-                    Settings
+                  <MenuItem onClick={handleSignOut}>
+                    Sign Out
                   </MenuItem>
                 </MobileMenu>
               </>

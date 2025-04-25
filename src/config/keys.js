@@ -1,1 +1,1 @@
-export const GEMINI_API_KEY = 'AIzaSyDzBl6ti2Iy_BfDrE5xDRXYS8Ecq6O8oAI'; 
+export const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY; 

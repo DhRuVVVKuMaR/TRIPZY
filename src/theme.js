@@ -2,14 +2,15 @@ export const theme = {
   colors: {
     primary: '#0dd354',
     secondary: '#525252',
-    background: '#827e7e',
-    text: '#525252',
+    background: '#ffffff',
+    text: '#2d3436',
+    textLight: '#636e72',
     white: '#ffffff',
     black: '#000000',
     gray: {
       light: '#f5f5f5',
-      medium: '#827e7e',
-      dark: '#525252'
+      medium: '#dfe6e9',
+      dark: '#636e72'
     }
   },
   fonts: {

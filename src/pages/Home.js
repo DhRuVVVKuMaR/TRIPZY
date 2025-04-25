@@ -21,6 +21,32 @@ const HeroSection = styled.section`
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.background} 0%, ${({ theme }) => theme.colors.primary}15 100%);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, ${({ theme }) => theme.colors.primary}10 0%, transparent 70%);
+    animation: gradientPulse 8s ease-in-out infinite;
+  }
+  
+  @keyframes gradientPulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+  }
 `;
 
 const HeroContent = styled.div`
@@ -100,12 +126,28 @@ const CTAButton = styled(motion.button)`
   }
   
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     
     &::before {
       left: 100%;
     }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.5s ease;
+  }
+  
+  &:hover::after {
+    transform: scale(1);
   }
 `;
 
@@ -117,13 +159,28 @@ const ScrollIndicator = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   color: ${({ theme }) => theme.colors.text};
   opacity: 0.6;
   cursor: pointer;
+  width: 100%;
+  text-align: center;
   
   span {
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    animation: fadeInOut 2s infinite;
+    display: block;
+    width: 100%;
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 `;
 
@@ -192,6 +249,19 @@ const TravelIcon = styled(motion.div)`
   color: ${({ theme }) => theme.colors.primary};
   opacity: 0.7;
   z-index: 1;
+  animation: float 6s ease-in-out infinite;
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+  }
 `;
 
 const TravelIconsContainer = styled.div`
@@ -208,24 +278,28 @@ const CompassIcon = styled(TravelIcon)`
   top: 20%;
   left: 10%;
   font-size: 2rem;
+  animation-delay: 0s;
 `;
 
 const MapIcon = styled(TravelIcon)`
   top: 40%;
   right: 15%;
   font-size: 1.8rem;
+  animation-delay: 1s;
 `;
 
 const SuitcaseIcon = styled(TravelIcon)`
   bottom: 30%;
   left: 20%;
   font-size: 1.6rem;
+  animation-delay: 2s;
 `;
 
 const PlaneIcon = styled(TravelIcon)`
   top: 60%;
   right: 25%;
   font-size: 2.2rem;
+  animation-delay: 3s;
 `;
 
 const Home = () => {
