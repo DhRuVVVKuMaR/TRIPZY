@@ -1,4 +1,4 @@
-# TRIPZY Clone
+# TRIPZY
 
 A modern, animated website clone of TRIPZY built with React, styled-components, and Firebase.
 
